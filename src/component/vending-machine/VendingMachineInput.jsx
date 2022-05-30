@@ -3,18 +3,7 @@ import * as uiConst from "constant/uiConstant";
 import styled from "styled-components";
 
 function VendingMachineInput({ inputRef }) {
-    const handleInsertedCoin = () => {
-        // TODO: 돈 입력 받아서 보정하는 알고리즘
-    };
-
-    return (
-        <CoinInput
-            type="text"
-            ref={inputRef}
-            placeholder="금액을 입력해주세요"
-            onClick={handleInsertedCoin}
-        />
-    );
+    return <CoinInput type="text" ref={inputRef} placeholder="금액을 입력해주세요" />;
 }
 
 const CoinInput = styled.input`

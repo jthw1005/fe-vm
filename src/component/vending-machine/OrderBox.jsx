@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable react/jsx-no-bind */
 import { useRef, useContext } from "react";
 
 import { vendingMachineContext } from "App.jsx";
@@ -17,15 +15,27 @@ function OrderBox() {
         useContext(vendingMachineContext);
 
     const inputRef = useRef(false);
+    function adjustCoinType(value, listObj) {
+        let returnCoinType = "";
+        const typesOfCoins = listObj.map((el) => el.value);
 
-    function adjustCoinType(value) {
-        // TODO: 금액 보정 알고리즘 - 개수도 확인해야함, 맞는 금액 없음 nill 반환
-        return +value;
+        for (let i = typesOfCoins.length - 1; i >= 0; i -= 1) {
+            const coinQuantity = listObj.filter((el) => el.value === typesOfCoins[i])[0].quantity;
+            if (typesOfCoins[i] <= value && coinQuantity) {
+                returnCoinType = typesOfCoins[i];
+                return +returnCoinType;
+            }
+        }
+        return null;
     }
 
     function handleInsertBtn() {
-        const correctCoinType = adjustCoinType(inputRef.current.value);
-        if (!correctCoinType) return;
+        const correctCoinType = adjustCoinType(inputRef.current.value, coinList);
+        if (!correctCoinType) {
+            alert("현재 지갑에는 해당 단위의 돈이 없습니다.");
+            inputRef.current.value = "";
+            return;
+        }
         setInsertedCoin((prev) => {
             return { ...prev, [correctCoinType]: (prev[correctCoinType] || 0) + 1 };
         });
